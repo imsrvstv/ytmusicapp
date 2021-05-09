@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+        <link rel="shortcut icon" href="https://user-images.githubusercontent.com/868109/63057127-5d3e8780-be9e-11e9-9488-bf280a5ff1ed.png" />
+        <title>YouTube Music App</title>
+        <style>
+            .container {
+                width: 600px;
+            }
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+            a {
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="d-flex justify-content-center pt-3 display-6 bg-dark text-white">
+            <a href="{% url 'home' %}"><p class="font-monospace">YouTube Music Application</p></a>
+        </div>
+        <div class="mt-2">
+            <a class="bg-secondary text-white" style="padding:9px 20px;" href="{% url 'home' %}">Home</a>
+            <a class="bg-secondary text-white" style="padding:9px 20px;" href="{% url 'createplaylist' %}">Create Playlist</a>
+        </div>
+        {% block content1 %}
+        <div class="container mt-5 mb-4">
+            <form method="POST" enctype="multipart/form-data" action="{% url 'searchresult' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control searchBar" placeholder="Enter song to search" aria-label="Enter song to search" aria-describedby="searchButton" name="songName" required>
+                    <button class="btn btn-outline-dark searchButton" type="submit" id="searchButton">Search</button>
+                </div>
+            </form>
+        </div>
+        {% endblock %}
+        <div class="row">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+        <script>
+            window.onload = function()
+            {
+                if("{{ createdPlay }}"=="True")
+                {
+                    alert("Playlist Created!");
+                }
+                else if("{{ addedSong }}"=="True")
+                {
+                    alert("Songs Added");
+                }
+            }
+        </script>
+    </body>
+</html>

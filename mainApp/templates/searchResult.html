@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="mb-3 d-flex align-items-center flex-column">
+    <p class="display-7" style="font-size: 20px;font-weight: bold;">Choose songs select playlist and add</p>
+    <form method="post" enctype="multipart/form-data" action="{% url 'midpro' %}">
+        {% csrf_token %}
+        <input type="hidden" class="hiddenField" name="songids" value="">
+        <div class="input-group">
+            <select class="form-control playlistSongs" aria-describedby="formopt" name="playlist" required tooltip="Please Choose a playlist">
+                <option value="">Choose a playlist</option>
+                {% for i in data1 %}
+                <option value="{{ i.playlistid }}">{{ i.title }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" id="formopt" class="btn btn-outline-dark">Add to Playlist</button>
+        </div>
+    </form>
+</div>
+{% for i in data %}
+<div class="card mb-3 selectedSongs" style="width: 15rem;margin-left: 27px;" onClick=selected(this) check=0 songid="{{ i.songid }}">
+    <img src="{{ i.imgurl }}" class="card-img-top" alt="thumbnail" style="object-fit: cover;height: 20vh;">
+    <div class="card-body">
+        <h5 class="card-title">{{ i.title }}</h5>
+    </div>
+</div>
+{% endfor %}
+<script>
+    var sId = "";
+    function selected(item) {
+        if(item.getAttribute('check')==1)
+        {
+            item.setAttribute('check', 0);
+            item.style.backgroundColor = "white";
+        }
+        else
+        {
+            item.setAttribute('check', 1);
+            item.style.backgroundColor = "#2ecc71";
+        }
+        getSelectedSongs()
+    }
+    function getSelectedSongs()
+    {
+        sId = "";
+        var selItems = document.getElementsByClassName("selectedSongs");
+        for(var i=0;i<selItems.length;i++)
+        {
+            if(selItems[i].getAttribute('check')==1)
+            {
+                sId = sId.concat(' ', selItems[i].getAttribute("songid"));
+            }
+        }
+        document.getElementsByClassName("hiddenField")[0].setAttribute("value", sId);
+        console.log(document.getElementsByClassName("hiddenField")[0].getAttribute("value"));
+        // console.log(document.querySelector("select").value)
+    }
+</script>
+{% endblock %}
